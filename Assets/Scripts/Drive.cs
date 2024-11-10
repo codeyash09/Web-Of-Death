@@ -31,9 +31,9 @@ public class Drive : MonoBehaviour
             }
 
 
-            if (rb.velocity.magnitude > 0.5f)
+            if (rb.velocity.magnitude > 1f)
             {
-                transform.eulerAngles += new Vector3(0, turnSpeed * Input.GetAxis("Horizontal"), 0);
+                transform.eulerAngles += new Vector3(0, turnSpeed * Input.GetAxis("Horizontal") * (rb.velocity.magnitude / (topSpeed/2)), 0);
             }
         }
     }
