@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Suspension : MonoBehaviour
 {
     public Transform[] points;
+    public Transform[] wheels;
     public float maxSuspensionHeight;
     public float suspensionForce;
     public static bool isGrounded =false;
+
+    Vector3[] wheelPoints;
 
     Rigidbody rb;
     Vector3[] pts;
@@ -17,14 +21,14 @@ public class Suspension : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         pts = new Vector3[points.Length];
         isGrounded = false;
+        wheelPoints = new Vector3[wheels.Length];
     }
 
 
     void FixedUpdate()
     {
-
-
-
+        
+        
         for (int i = 0; i < pts.Length; i++) {
             pts[i] = points[i].transform.position;
         }
@@ -32,23 +36,26 @@ public class Suspension : MonoBehaviour
         int numberOfContacts = 0;
 
 
-        foreach (Vector3 suspensionPoint in pts) {
+        for(int i = 0; i < pts.Length; i++){
             RaycastHit hit;
 
-            if(Physics.Raycast(suspensionPoint, -transform.up, out hit, maxSuspensionHeight))
+            if (Physics.Raycast(pts[i], -transform.up, out hit, maxSuspensionHeight))
             {
                 numberOfContacts++;
-                Debug.DrawRay(suspensionPoint, -transform.up * hit.distance, Color.red);
+                Debug.DrawRay(pts[i], -transform.up * hit.distance, Color.red);
 
-                rb.AddForceAtPosition(transform.up * CalculatedForce(suspensionForce, hit.distance), suspensionPoint);
+                rb.AddForceAtPosition(transform.up * CalculatedForce(suspensionForce, hit.distance), pts[i]);
+                wheelPoints[i] = hit.point + (transform.up * (1.75f / 2));
             }
             else
             {
-                Debug.DrawRay(suspensionPoint, -transform.up * maxSuspensionHeight, Color.white);
-                
+                Debug.DrawRay(pts[i], -transform.up * maxSuspensionHeight, Color.white);
+                wheelPoints[i] = (pts[i] + -transform.up * maxSuspensionHeight) + (transform.up * (1.75f / 2));
+
             }
 
-
+            
+            wheels[i].transform.position = wheelPoints[i];
         }
 
         if(numberOfContacts > 0)
@@ -60,7 +67,14 @@ public class Suspension : MonoBehaviour
             isGrounded= false;
         }
 
-        
+        foreach(Transform wheel in wheels)
+        {
+            wheel.transform.localEulerAngles += new Vector3(0, 0, -(rb.velocity.magnitude));
+            
+        }
+   
+
+
     }
 
 

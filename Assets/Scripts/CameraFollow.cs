@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform car;
-    float smoothnessDamp = 0.1f;
+    float smoothnessDamp = 0.01f;
   
     
 
@@ -14,9 +14,10 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Vector3.Distance(transform.position, car.position) > 0.5f)
+        if (Vector3.Distance(transform.position, car.position) > 2f)
         {
-            transform.position = Vector3.Lerp(transform.position, car.position, smoothnessDamp);
+            
+            transform.position = Vector3.Lerp(transform.position, car.position, smoothnessDamp * Vector3.Distance(transform.position, car.position));
             transform.LookAt(car);
             transform.GetChild(0).LookAt(car);
         }
