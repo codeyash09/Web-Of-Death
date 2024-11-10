@@ -7,7 +7,7 @@ public class Suspension : MonoBehaviour
     public Transform[] points;
     public float maxSuspensionHeight;
     public float suspensionForce;
-
+    public static bool isGrounded =false;
 
     Rigidbody rb;
     Vector3[] pts;
@@ -16,6 +16,7 @@ public class Suspension : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         pts = new Vector3[points.Length];
+        isGrounded = false;
     }
 
 
@@ -28,7 +29,7 @@ public class Suspension : MonoBehaviour
             pts[i] = points[i].transform.position;
         }
 
-
+        int numberOfContacts = 0;
 
 
         foreach (Vector3 suspensionPoint in pts) {
@@ -36,6 +37,7 @@ public class Suspension : MonoBehaviour
 
             if(Physics.Raycast(suspensionPoint, -transform.up, out hit, maxSuspensionHeight))
             {
+                numberOfContacts++;
                 Debug.DrawRay(suspensionPoint, -transform.up * hit.distance, Color.red);
 
                 rb.AddForceAtPosition(transform.up * CalculatedForce(suspensionForce, hit.distance), suspensionPoint);
@@ -45,7 +47,20 @@ public class Suspension : MonoBehaviour
                 Debug.DrawRay(suspensionPoint, -transform.up * maxSuspensionHeight, Color.white);
                 
             }
+
+
         }
+
+        if(numberOfContacts > 0)
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded= false;
+        }
+
+        
     }
 
 

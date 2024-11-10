@@ -14,8 +14,13 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, car.position, smoothnessDamp);
-        transform.LookAt(car);
-        transform.GetChild(0).LookAt(car);
+        if (Vector3.Distance(transform.position, car.position) > 0.5f)
+        {
+            transform.position = Vector3.Lerp(transform.position, car.position, smoothnessDamp);
+            transform.LookAt(car);
+            transform.GetChild(0).LookAt(car);
+        }
+
+
     }
 }
