@@ -17,7 +17,7 @@ public class Drive : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         rb.AddForce(new Vector3(0, -1.0f, 0) * rb.mass * gEarth);
 
