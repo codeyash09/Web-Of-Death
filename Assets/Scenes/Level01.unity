@@ -1080,7 +1080,7 @@ MonoBehaviour:
   speed: 0.87
   topSpeed: 55
   turnSpeed: 2.8
-  gEarth: 24
+  gEarth: 15
 --- !u!114 &1200364955
 MonoBehaviour:
   m_ObjectHideFlags: 0
