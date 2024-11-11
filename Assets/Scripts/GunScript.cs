@@ -48,7 +48,7 @@ public class GunScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            transform.GetChild(0).GetChild(2).GetChild(0).transform.Rotate(0, 0, 30f);
+            transform.GetChild(0).GetChild(2).GetChild(0).transform.Rotate(0, 0, 15f);
         }
         
         
